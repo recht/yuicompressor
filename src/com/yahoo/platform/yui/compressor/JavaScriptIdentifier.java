@@ -8,7 +8,7 @@
  */
 package com.yahoo.platform.yui.compressor;
 
-import org.mozilla.javascript.Token;
+import com.yahoo.platform.yui.org.mozilla.javascript.Token;
 
 /**
  * JavaScriptIdentifier represents a variable/function identifier.

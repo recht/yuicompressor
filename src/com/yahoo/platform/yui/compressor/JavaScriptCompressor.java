@@ -8,7 +8,7 @@
  */
 package com.yahoo.platform.yui.compressor;
 
-import org.mozilla.javascript.*;
+import com.yahoo.platform.yui.org.mozilla.javascript.*;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -16,6 +16,8 @@ import java.io.Writer;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.mozilla.javascript.EvaluatorException;
 
 public class JavaScriptCompressor {
 
@@ -526,11 +528,30 @@ public class JavaScriptCompressor {
     private ScriptOrFnScope globalScope = new ScriptOrFnScope(-1, null);
     private Hashtable indexedScopes = new Hashtable();
 
-    public JavaScriptCompressor(Reader in, ErrorReporter reporter)
+    public JavaScriptCompressor(Reader in, final org.mozilla.javascript.ErrorReporter reporter)
             throws IOException, EvaluatorException {
 
-        this.logger = reporter;
-        this.tokens = parse(in, reporter);
+        this.logger = new ErrorReporter() {
+			@Override
+			public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+				reporter.warning(message, sourceName, line, lineSource, lineOffset);
+			}
+
+			@Override
+			public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+				reporter.error(message, sourceName, line, lineSource, lineOffset);
+				
+			}
+
+			@Override
+			public com.yahoo.platform.yui.org.mozilla.javascript.EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+				EvaluatorException e = reporter.runtimeError(message, sourceName, line, lineSource, lineOffset);
+				
+				return new com.yahoo.platform.yui.org.mozilla.javascript.EvaluatorException(e.getMessage(), e.getSourceName(), e.getLineNumber(), e.getLineSource(), e.getColumnNumber());
+			}
+        	
+        };
+        this.tokens = parse(in, this.logger);
     }
 
     public void compress(Writer out, int linebreak, boolean munge, boolean verbose,

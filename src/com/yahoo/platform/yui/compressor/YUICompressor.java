@@ -9,8 +9,7 @@
 package com.yahoo.platform.yui.compressor;
 
 import jargs.gnu.CmdLineParser;
-import org.mozilla.javascript.ErrorReporter;
-import org.mozilla.javascript.EvaluatorException;
+import com.yahoo.platform.yui.org.mozilla.javascript.EvaluatorException;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -128,7 +127,7 @@ public class YUICompressor {
 
                         try {
 
-                            JavaScriptCompressor compressor = new JavaScriptCompressor(in, new ErrorReporter() {
+                            JavaScriptCompressor compressor = new JavaScriptCompressor(in, new org.mozilla.javascript.ErrorReporter() {
 
                                 public void warning(String message, String sourceName,
                                         int line, String lineSource, int lineOffset) {
@@ -148,10 +147,10 @@ public class YUICompressor {
                                     }
                                 }
 
-                                public EvaluatorException runtimeError(String message, String sourceName,
+                                public org.mozilla.javascript.EvaluatorException runtimeError(String message, String sourceName,
                                         int line, String lineSource, int lineOffset) {
                                     error(message, sourceName, line, lineSource, lineOffset);
-                                    return new EvaluatorException(message);
+                                    return new org.mozilla.javascript.EvaluatorException(message);
                                 }
                             });
 
