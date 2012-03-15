@@ -50,10 +50,10 @@ public abstract class VMBridge
     private static VMBridge makeInstance()
     {
         String[] classNames = {
-            "org.mozilla.javascript.VMBridge_custom",
-            "org.mozilla.javascript.jdk15.VMBridge_jdk15",
-            "org.mozilla.javascript.jdk13.VMBridge_jdk13",
-            "org.mozilla.javascript.jdk11.VMBridge_jdk11",
+            "com.yahoo.platform.yui.org.mozilla.javascript.VMBridge_custom",
+            "com.yahoo.platform.yui.org.mozilla.javascript.jdk15.VMBridge_jdk15",
+            "com.yahoo.platform.yui.org.mozilla.javascript.jdk13.VMBridge_jdk13",
+            "com.yahoo.platform.yui.org.mozilla.javascript.jdk11.VMBridge_jdk11",
         };
         for (int i = 0; i != classNames.length; ++i) {
             String className = classNames[i];
